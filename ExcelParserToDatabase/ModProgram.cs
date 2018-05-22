@@ -19,7 +19,7 @@ namespace ExcelParserToDatabase
 
         public static int BPLID;
 
-        public static SAPbobsCOM.Recordset oRecordSet2;
+
         public static SAPbobsCOM.Recordset oRecordSet;
         public static List<string> ErrMessages;
         private static Users oUser;
@@ -40,12 +40,10 @@ namespace ExcelParserToDatabase
             oCompany = TryConnect();
             oUserObjectMD = (SAPbobsCOM.UserObjectsMD)ModProgram.oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oUserObjectsMD);
             oUserFieldsMD = ((SAPbobsCOM.UserFieldsMD)(ModProgram.oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oUserFields)));
-            oUser = ((SAPbobsCOM.Users)oCompany.GetBusinessObject(BoObjectTypes.oUsers));
-            oUser.GetByKey(oCompany.UserSignature);
-            oRecordSet2 = (SAPbobsCOM.Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
+
             oRecordSet = (SAPbobsCOM.Recordset)oCompany.GetBusinessObject(BoObjectTypes.BoRecordset);
-            oRecordSet2.DoQuery("SELECT MltpBrnchs FROM OADM");
-            Branches = oRecordSet2.Fields.Item(0).Value.ToString();
+            oRecordSet.DoQuery("SELECT MltpBrnchs FROM OADM");
+            Branches = oRecordSet.Fields.Item(0).Value.ToString();
             SAPbouiCOM.Framework.Application.SBO_Application.StatusBar.SetText("Load migration table addon", SAPbouiCOM.BoMessageTime.bmt_Medium, SAPbouiCOM.BoStatusBarMessageType.smt_Warning);
 
             ExcelParser ep = new ExcelParser();
@@ -120,12 +118,6 @@ namespace ExcelParserToDatabase
             ModProgram.oUserObjectMD = (SAPbobsCOM.UserObjectsMD)ModProgram.oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.oUserObjectsMD);
 
         }
-        public static void CleanRecordset()
-        {
-            ModProgram.oRecordSet2 = null;
-            GC.Collect();
-            ModProgram.oRecordSet2 = (SAPbobsCOM.Recordset)ModProgram.oCompany.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset);
-
-        }
+       
     }
 }

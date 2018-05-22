@@ -12,7 +12,6 @@ namespace ExcelParserToDatabase
     {
         public void FillFromXLFileDI(string pathWithName,string UDOName)
         {
-
             //Create COM Objects. Create a COM object for everything that is referenced
             Microsoft.Office.Interop.Excel.Application xlApp = new Excel.Application();
             Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(pathWithName); //pathWithName here
@@ -61,7 +60,7 @@ namespace ExcelParserToDatabase
                         } 
                     string buuf = xlRange.Cells[i, j + 1].Value2.ToString().Replace("'", "").Replace(",", ".");
                     string buffer = xlRange.Cells[i, j + 1].Value2.ToString().Replace("'", "").Replace(",", "."); Debug.Write(buffer);
-                        ModProgram.oRecordSet.DoQuery("select isnull(max(DocEntry)+1,1) from [@BDO_UKR_OMTD]");
+                        ModProgram.oRecordSet.DoQuery("select isnull(max(DocEntry)+1,1) from [@BDO_UKR_"+ UDOName.Remove(UDOName.Length - 2, 2) + "]");
                         oGeneralData.SetProperty("Code", ModProgram.oRecordSet.Fields.Item(0).Value.ToString());
                     }
 
